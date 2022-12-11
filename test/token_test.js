@@ -10,6 +10,17 @@ describe("token  contract", function () {
 
     const ownerBalance = await hhtoken.balancesOf(owner.address);
 
-    expect("1000").to.equal(ownerBalance.toString());
+    expect(await hhtoken.totalSupply()).to.equal(ownerBalance);
+  });
+
+  it("should transfer token between  accounts", async function () {
+    const [owner, adder1, adder2] = await ethers.getSigners();
+    const Token = await ethers.getContractFactory("Token");
+    const hhToken = await Token.deploy();
+    await hhToken.transfer(adder1.address, 100);
+    const ownerBal = await hhToken.balancesOf(owner.address);
+    const bal2 = await hhToken.balancesOf(adder1.address);
+    expect(ownerBal).to.equal(1900);
+    expect(bal2).to.equal(100);
   });
 });

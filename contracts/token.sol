@@ -13,9 +13,16 @@ contract Token {
         balances[owner] = totalSupply;
     }
 
-    function transfer(address _to, uint _amt) external {}
+    function transfer(address _to, uint _amt) external {
+        balances[owner] -= _amt;
+        balances[_to] += _amt;
+    }
 
     function balancesOf(address _account) public view returns (uint) {
         return balances[_account];
+    }
+
+    function getSupply() public view returns (uint) {
+        return totalSupply;
     }
 }
